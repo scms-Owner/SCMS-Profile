@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { CORE_SERVICES } from '../data/companyData';
 import { ServiceItem } from '../types';
-import { ResponsiveImage } from './ResponsiveImage';
 import { Tilt3D } from './Tilt3D';
 import {
   Building2,
@@ -76,26 +75,36 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onRequestServi
                 {/* 3D Top Accent Line */}
                 <div className="h-1 w-full bg-gradient-to-r from-transparent via-[#fce089]/60 to-transparent group-hover:via-[#fce089] transition-all"></div>
 
-                {/* Card Image */}
-                <div className="relative h-48 w-full overflow-hidden bg-gray-900">
-                  <ResponsiveImage
-                    id={`service-img-${service.id}`}
-                    src={service.image}
-                    alt={service.title}
-                    layout="card"
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    containerClassName="w-full h-full absolute inset-0"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0f1118] via-[#0f1118]/40 to-transparent pointer-events-none"></div>
+                {/* 3D Modern Icon Banner (Pure Vector Icons & Architectural Styling) */}
+                <div className="relative h-44 w-full overflow-hidden bg-gradient-to-br from-[#191d29] via-[#11131a] to-[#0a0b10] p-4 flex flex-col justify-between border-b border-[#d4af37]/25 group-hover:border-[#d4af37]/60 transition-colors">
+                  {/* Subtle Blueprint Grid */}
+                  <div
+                    className="absolute inset-0 opacity-[0.06] pointer-events-none"
+                    style={{
+                      backgroundImage: `linear-gradient(to right, #d4af37 1px, transparent 1px), linear-gradient(to bottom, #d4af37 1px, transparent 1px)`,
+                      backgroundSize: '24px 24px'
+                    }}
+                  ></div>
 
-                  {/* Service Number Badge */}
-                  <div className="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-black/85 backdrop-blur-md border border-[#d4af37]/50 text-[10px] font-black tracking-wider text-[#fce089] shadow-md">
-                    {service.number}
+                  <div className="relative z-10 flex items-center justify-between">
+                    <div className="px-2.5 py-1 rounded-md bg-black/85 backdrop-blur-md border border-[#d4af37]/50 text-[10px] font-black tracking-wider text-[#fce089] shadow-md font-mono">
+                      {service.number}
+                    </div>
+                    <div className="px-2 py-0.5 rounded-full bg-[#d4af37]/15 border border-[#d4af37]/40 text-[#fce089] text-[9px] font-black tracking-widest uppercase">
+                      PROFESSIONAL
+                    </div>
                   </div>
 
-                  {/* Icon Floating Badge */}
-                  <div className="absolute bottom-3 right-3 w-10 h-10 rounded-xl bg-[#191d29] border border-[#d4af37]/50 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                    {getServiceIcon(service.iconName)}
+                  {/* Central 3D Vector Icon */}
+                  <div className="relative z-10 flex items-center justify-center my-auto">
+                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#d4af37]/25 to-black/70 border-2 border-[#d4af37]/60 flex items-center justify-center shadow-[0_8px_20px_rgba(0,0,0,0.7)] group-hover:scale-110 group-hover:border-[#fce089] transition-all duration-300">
+                      {getServiceIcon(service.iconName)}
+                    </div>
+                  </div>
+
+                  <div className="relative z-10 flex items-center justify-between text-[10px] font-mono text-gray-400">
+                    <span className="group-hover:text-[#fce089] transition-colors">ESTD 2016</span>
+                    <span className="text-[#d4af37]/80 font-bold">SCMS VERIFIED</span>
                   </div>
                 </div>
 
@@ -164,16 +173,20 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onRequestServi
 
             {/* Modal Body */}
             <div className="overflow-y-auto py-5 space-y-5">
-              <div className="relative h-48 w-full rounded-xl overflow-hidden">
-                <ResponsiveImage
-                  id={`service-modal-img-${selectedService.id}`}
-                  src={selectedService.image}
-                  alt={selectedService.title}
-                  layout="fullscreen"
-                  priority
-                  className="w-full h-full object-cover"
-                  containerClassName="w-full h-full absolute inset-0"
-                />
+              <div className="relative h-32 w-full rounded-xl overflow-hidden bg-gradient-to-br from-[#1b1f2d] via-[#121520] to-[#0a0c12] p-5 flex items-center justify-center border border-[#d4af37]/40 shadow-inner">
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 rounded-2xl bg-[#d4af37]/20 border-2 border-[#d4af37]/60 flex items-center justify-center shadow-lg">
+                    {getServiceIcon(selectedService.iconName)}
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-black text-[#d4af37] tracking-widest uppercase font-mono">
+                      ESTD 2016 • SERVICE #{selectedService.number}
+                    </span>
+                    <h3 className="text-base sm:text-lg font-black text-white font-['Montserrat']">
+                      {selectedService.title}
+                    </h3>
+                  </div>
+                </div>
               </div>
 
               <div>

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { WORKER_CATEGORIES } from '../data/companyData';
 import { WorkerCategory } from '../types';
-import { ResponsiveImage } from './ResponsiveImage';
 import { Tilt3D } from './Tilt3D';
 import {
   Layers,
@@ -128,27 +127,34 @@ export const ManpowerSection: React.FC<ManpowerSectionProps> = ({ onRequestWorkf
                 <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#fce089]/60 to-transparent group-hover:via-[#fce089] transition-all"></div>
 
                 <div>
-                  {/* Image & Icon Header */}
-                  <div className="relative h-36 w-full rounded-xl overflow-hidden mb-4 bg-gray-900 shadow-inner">
-                    <ResponsiveImage
-                      id={`worker-img-${worker.id}`}
-                      src={worker.image}
-                      alt={worker.name}
-                      layout="card"
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                      containerClassName="w-full h-full absolute inset-0"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#10121a] via-[#10121a]/30 to-transparent pointer-events-none"></div>
-
-                    <div className="absolute top-2.5 left-2.5 w-9 h-9 rounded-lg bg-[#08090d]/92 backdrop-blur-md border border-[#d4af37]/50 flex items-center justify-center shadow-md">
-                      {getWorkerIcon(worker.iconName)}
+                  {/* 3D Trade Vector Icon Header */}
+                  <div className="relative h-32 w-full rounded-xl overflow-hidden mb-4 bg-gradient-to-br from-[#1c202d] via-[#12141c] to-[#0a0c12] p-3 flex flex-col justify-between border border-[#d4af37]/30 group-hover:border-[#d4af37]/70 transition-colors shadow-inner">
+                    <div className="flex items-center justify-between">
+                      <div className="w-8 h-8 rounded-lg bg-[#08090d]/90 border border-[#d4af37]/50 flex items-center justify-center shadow-md">
+                        {getWorkerIcon(worker.iconName)}
+                      </div>
+                      {worker.bengaliTitle && (
+                        <div className="px-2 py-0.5 rounded bg-black/85 text-[10px] font-bold text-[#fce089] border border-[#d4af37]/40 font-mono">
+                          {worker.bengaliTitle}
+                        </div>
+                      )}
                     </div>
 
-                    {worker.bengaliTitle && (
-                      <div className="absolute bottom-2 right-2.5 px-2 py-0.5 rounded bg-black/85 backdrop-blur-md text-[10px] font-bold text-[#fce089] border border-[#d4af37]/30 font-mono">
-                        {worker.bengaliTitle}
+                    <div className="flex items-center justify-center my-auto">
+                      <div className="w-12 h-12 rounded-xl bg-[#d4af37]/15 border border-[#d4af37]/40 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                        {getWorkerIcon(worker.iconName)}
                       </div>
-                    )}
+                    </div>
+
+                    <div className="flex items-center justify-between text-[9px] text-gray-400 font-mono">
+                      <span className="text-[#4ade80] font-bold flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#22c55e] animate-pulse"></span>
+                        READY
+                      </span>
+                      <span className="text-[#fce089]/90 font-bold uppercase tracking-wider">
+                        TRADE TESTED
+                      </span>
+                    </div>
                   </div>
 
                   <div className="text-[10px] font-black text-[#d4af37] uppercase tracking-wider mb-1 font-['Montserrat']">

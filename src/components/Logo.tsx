@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { CompanyLogoSeal } from './CompanyLogoSeal';
+import { normalizeAssetUrl } from '../utils/imageUtils';
 
 interface LogoProps {
   variant?: 'full' | 'compact' | 'footer' | 'seal-only';
@@ -25,7 +26,7 @@ export const Logo: React.FC<LogoProps> = ({
       <div className={`relative inline-flex items-center justify-center ${className}`}>
         {!imageError ? (
           <img
-            src="/company-logo.jpg"
+            src={normalizeAssetUrl('company-logo.jpg')}
             alt="SOHANUR CONSTRUCTION & MANPOWER SOLUTION Logo"
             className="rounded-full object-cover shadow-lg border border-[#d4af37]/40"
             style={{ width: currentSize, height: currentSize }}
@@ -47,7 +48,7 @@ export const Logo: React.FC<LogoProps> = ({
           <div className="rounded-full overflow-hidden bg-[#0c0d12] flex items-center justify-center">
             {!imageError ? (
               <img
-                src="/company-logo.jpg"
+                src={normalizeAssetUrl('company-logo.jpg')}
                 alt="SOHANUR CONSTRUCTION & MANPOWER SOLUTION"
                 className="rounded-full object-cover transition-transform duration-300 group-hover:scale-105"
                 style={{ width: currentSize, height: currentSize }}

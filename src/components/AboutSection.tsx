@@ -1,7 +1,6 @@
 import React from 'react';
 import { COMPANY_INFO } from '../data/companyData';
 import { CompanyLogoSeal } from './CompanyLogoSeal';
-import { ResponsiveImage } from './ResponsiveImage';
 import { Tilt3D } from './Tilt3D';
 import {
   Target,
@@ -127,16 +126,13 @@ export const AboutSection: React.FC = () => {
             <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#fce089] via-[#d4af37] to-[#aa7c11]"></div>
 
             <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
-              {/* Executive Avatar / Photo */}
+              {/* Executive Seal / Official Emblem */}
               <div className="w-32 sm:w-44 rounded-2xl bg-gradient-to-b from-[#d4af37] via-[#aa7c11] to-[#12141c] p-2 shadow-2xl flex-shrink-0 text-center relative group">
-                <div className="w-full rounded-xl overflow-hidden shadow-inner">
-                  <ResponsiveImage
-                    id="about-proprietor-img"
-                    src={COMPANY_INFO.proprietorPhoto || '/images/proprietor/proprietor.jpg'}
-                    alt={COMPANY_INFO.proprietor}
-                    layout="thumb"
-                    className="w-full h-auto rounded-xl object-cover shadow-inner transition-transform duration-500 group-hover:scale-105"
-                  />
+                <div className="w-full aspect-square rounded-xl bg-[#0b0d13] p-4 flex flex-col items-center justify-center border border-[#d4af37]/40 shadow-inner">
+                  <div className="w-16 h-16 rounded-2xl bg-[#d4af37]/15 border border-[#d4af37]/50 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                    <UserCheck className="w-9 h-9 text-[#fce089]" />
+                  </div>
+                  <CompanyLogoSeal size={28} theme="gold" />
                 </div>
                 <span className="text-[10px] font-black text-[#d4af37] uppercase tracking-wider mt-2 block">
                   PROPRIETOR

@@ -1,20 +1,47 @@
 import React, { useState } from 'react';
 import { GALLERY_ITEMS } from '../data/companyData';
 import { GalleryItem } from '../types';
-import { ResponsiveImage } from './ResponsiveImage';
 import {
-  Camera,
+  Building2,
   Maximize2,
   X,
   ChevronLeft,
   ChevronRight,
   MapPin,
-  Tag
+  Tag,
+  Layers,
+  Hammer,
+  Wrench,
+  HardHat,
+  ShieldCheck,
+  Award,
+  Camera
 } from 'lucide-react';
 
 export const ProjectGallery: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  const getCategoryIcon = (category: string) => {
+    switch (category) {
+      case 'Construction Work':
+      case 'Construction Sites':
+        return <Building2 className="w-8 h-8 text-[#fce089]" />;
+      case 'Rod Binding':
+      case 'Steel Fixing':
+        return <Layers className="w-8 h-8 text-[#fce089]" />;
+      case 'Shuttering':
+        return <Hammer className="w-8 h-8 text-[#fce089]" />;
+      case 'Concrete Work':
+        return <Wrench className="w-8 h-8 text-[#fce089]" />;
+      case 'Manpower Team':
+        return <HardHat className="w-8 h-8 text-[#fce089]" />;
+      case 'Completed Work':
+        return <ShieldCheck className="w-8 h-8 text-[#fce089]" />;
+      default:
+        return <Building2 className="w-8 h-8 text-[#fce089]" />;
+    }
+  };
 
   const categories = [
     'All',
@@ -80,52 +107,63 @@ export const ProjectGallery: React.FC = () => {
           ))}
         </div>
 
-        {/* Masonry-Style Gallery Grid */}
+        {/* Technical Vector Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredItems.map((item, index) => (
             <div
               key={item.id}
               onClick={() => setLightboxIndex(index)}
-              className="group relative h-72 sm:h-80 rounded-2xl overflow-hidden cursor-pointer bg-[#12141c] border border-white/10 hover:border-[#d4af37] shadow-xl hover:shadow-[0_15px_30px_rgba(212,175,55,0.2)] transition-all duration-300"
+              className="group relative h-64 rounded-2xl overflow-hidden cursor-pointer bg-gradient-to-br from-[#181b26] via-[#11131a] to-[#0a0c12] border border-[#d4af37]/35 hover:border-[#d4af37] shadow-xl hover:shadow-[0_15px_30px_rgba(212,175,55,0.2)] transition-all duration-300 p-5 flex flex-col justify-between"
             >
-              <ResponsiveImage
-                id={`gallery-img-${item.id}`}
-                src={item.image}
-                alt={item.title}
-                layout="gallery"
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-108"
-                containerClassName="w-full h-full absolute inset-0"
-              />
+              {/* Subtle Blueprint Grid */}
+              <div
+                className="absolute inset-0 opacity-[0.06] pointer-events-none"
+                style={{
+                  backgroundImage: `linear-gradient(to right, #d4af37 1px, transparent 1px), linear-gradient(to bottom, #d4af37 1px, transparent 1px)`,
+                  backgroundSize: '24px 24px'
+                }}
+              ></div>
 
-              {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0c0d12]/95 via-[#0c0d12]/40 to-transparent opacity-80 group-hover:opacity-95 transition-opacity"></div>
-
-              {/* Hover Floating Icon */}
-              <div className="absolute top-3 right-3 w-9 h-9 rounded-xl bg-black/60 backdrop-blur-md border border-[#d4af37]/40 flex items-center justify-center text-[#fce089] opacity-0 group-hover:opacity-100 transition-all duration-200">
-                <Maximize2 className="w-4 h-4" />
-              </div>
-
-              {/* Image Info at Bottom */}
-              <div className="absolute bottom-0 left-0 right-0 p-5 transform transition-transform">
-                <span className="text-[10px] font-bold text-[#fce089] uppercase tracking-wider px-2 py-0.5 rounded bg-[#d4af37]/20 border border-[#d4af37]/40 inline-block mb-1.5">
+              <div className="relative z-10 flex items-center justify-between">
+                <span className="text-[10px] font-bold text-[#fce089] uppercase tracking-wider px-2.5 py-1 rounded bg-[#d4af37]/20 border border-[#d4af37]/40 inline-block font-mono">
                   {item.category}
                 </span>
+                <div className="w-8 h-8 rounded-lg bg-black/60 border border-[#d4af37]/40 flex items-center justify-center text-[#fce089] group-hover:scale-110 transition-transform">
+                  <Maximize2 className="w-4 h-4" />
+                </div>
+              </div>
+
+              {/* Central Vector Icon */}
+              <div className="relative z-10 flex items-center justify-center my-auto">
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#d4af37]/25 to-black/70 border-2 border-[#d4af37]/60 flex items-center justify-center shadow-[0_8px_20px_rgba(0,0,0,0.7)] group-hover:scale-110 group-hover:border-[#fce089] transition-all duration-300">
+                  {getCategoryIcon(item.category)}
+                </div>
+              </div>
+
+              <div className="relative z-10">
                 <h3 className="text-base font-extrabold text-white font-['Montserrat'] line-clamp-1 mb-1 group-hover:text-[#fce089] transition-colors">
                   {item.title}
                 </h3>
-                {item.location && (
-                  <p className="text-xs text-gray-400 flex items-center gap-1">
-                    <MapPin className="w-3 h-3 text-[#d4af37]" />
-                    <span>{item.location}</span>
-                  </p>
-                )}
+                <div className="flex items-center justify-between text-xs text-gray-400">
+                  {item.location ? (
+                    <p className="flex items-center gap-1 truncate">
+                      <MapPin className="w-3 h-3 text-[#d4af37] flex-shrink-0" />
+                      <span className="truncate">{item.location}</span>
+                    </p>
+                  ) : (
+                    <span>Bangladesh Division</span>
+                  )}
+                  <span className="text-[#4ade80] text-[10px] font-mono font-bold flex-shrink-0">
+                    SCMS VERIFIED
+                  </span>
+                </div>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Professional Full-Screen Lightbox Modal */}
+      {/* Professional Detail Lightbox Modal */}
       {lightboxIndex !== null && filteredItems[lightboxIndex] && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-lg animate-fadeIn">
           {/* Close button */}
@@ -144,7 +182,7 @@ export const ProjectGallery: React.FC = () => {
               handlePrev();
             }}
             className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/60 text-white border border-white/20 hover:bg-[#d4af37] hover:text-black hover:border-transparent transition-all z-10"
-            aria-label="Previous image"
+            aria-label="Previous item"
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
@@ -156,34 +194,37 @@ export const ProjectGallery: React.FC = () => {
               handleNext();
             }}
             className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/60 text-white border border-white/20 hover:bg-[#d4af37] hover:text-black hover:border-transparent transition-all z-10"
-            aria-label="Next image"
+            aria-label="Next item"
           >
             <ChevronRight className="w-6 h-6" />
           </button>
 
-          {/* Image & Caption Container */}
-          <div className="max-w-4xl w-full flex flex-col items-center">
-            <div className="relative max-h-[75vh] w-auto rounded-xl overflow-hidden border border-[#d4af37]/40 shadow-2xl">
-              <ResponsiveImage
-                id={`lightbox-img-${filteredItems[lightboxIndex].id}`}
-                src={filteredItems[lightboxIndex].image}
-                alt={filteredItems[lightboxIndex].title}
-                layout="fullscreen"
-                priority
-                className="max-h-[75vh] w-auto object-contain"
-              />
+          {/* Detail Card Container */}
+          <div className="max-w-lg w-full bg-gradient-to-b from-[#181b24] to-[#0c0d12] border-2 border-[#d4af37]/50 rounded-2xl p-6 sm:p-8 text-center shadow-2xl relative">
+            <div className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-[#d4af37]/20 border-2 border-[#d4af37]/60 flex items-center justify-center shadow-lg">
+              {getCategoryIcon(filteredItems[lightboxIndex].category)}
             </div>
 
-            <div className="mt-4 text-center max-w-xl">
-              <span className="text-xs font-bold text-[#d4af37] tracking-wider uppercase">
-                {filteredItems[lightboxIndex].category}
-              </span>
-              <h3 className="text-lg sm:text-xl font-bold text-white font-['Montserrat'] mt-1">
-                {filteredItems[lightboxIndex].title}
-              </h3>
-              <p className="text-xs text-gray-400 mt-1">
-                Image {lightboxIndex + 1} of {filteredItems.length}
+            <span className="text-xs font-bold text-[#d4af37] tracking-wider uppercase font-mono px-3 py-1 rounded bg-[#d4af37]/15 border border-[#d4af37]/30 inline-block">
+              {filteredItems[lightboxIndex].category}
+            </span>
+
+            <h3 className="text-xl sm:text-2xl font-bold text-white font-['Montserrat'] mt-3">
+              {filteredItems[lightboxIndex].title}
+            </h3>
+
+            {filteredItems[lightboxIndex].location && (
+              <p className="text-sm text-gray-300 flex items-center justify-center gap-1.5 mt-2">
+                <MapPin className="w-4 h-4 text-[#d4af37]" />
+                <span>{filteredItems[lightboxIndex].location}</span>
               </p>
+            )}
+
+            <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-gray-400 font-mono">
+              <span>ESTD 2016</span>
+              <span className="text-[#fce089] font-bold">
+                SPEC RECORD {lightboxIndex + 1} OF {filteredItems.length}
+              </span>
             </div>
           </div>
         </div>

@@ -1,9 +1,9 @@
 import React from 'react';
 import { COMPANY_INFO } from '../data/companyData';
 import { CompanyLogoSeal } from './CompanyLogoSeal';
-import { ResponsiveImage } from './ResponsiveImage';
+import { Logo } from './Logo';
 import { Tilt3D } from './Tilt3D';
-import { Shield, HardHat, Award, MessageSquare, ArrowRight, CheckCircle2, PhoneCall, Building2 } from 'lucide-react';
+import { Shield, HardHat, Award, MessageSquare, ArrowRight, CheckCircle2, PhoneCall, Building2, UserCheck } from 'lucide-react';
 
 interface HeroProps {
   onHireConstructionClick: () => void;
@@ -21,24 +21,25 @@ export const Hero: React.FC<HeroProps> = ({
       id="home"
       className="relative min-h-[92vh] sm:min-h-screen flex items-center justify-center pt-24 pb-16 overflow-hidden isometric-grid"
     >
-      {/* Background Imagery with 3D Depth & Luxury Gold/Dark Gradient Overlays */}
-      <div className="absolute inset-0 z-0">
-        <ResponsiveImage
-          id="hero-bg-img"
-          src="/images/hero/hero-bg.jpg"
-          alt="Real building construction site with tower cranes and structural framing"
-          layout="hero"
-          priority={true}
-          className="w-full h-full object-cover object-center scale-105"
-          containerClassName="w-full h-full absolute inset-0"
-        />
-        {/* Layered dark charcoal gradients for pristine contrast and 3D architectural aesthetic */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#07080b]/98 via-[#0b0d13]/94 to-[#07080b]/85"></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-[#08090d] via-transparent to-[#07080b]/75"></div>
-        
-        {/* 3D Gold Ambient Glow Spheres */}
-        <div className="absolute top-1/4 left-1/3 -translate-x-1/2 w-[500px] h-[500px] bg-[#d4af37]/10 rounded-full blur-[150px] pointer-events-none"></div>
-        <div className="absolute bottom-10 right-10 w-80 h-80 bg-[#d4af37]/8 rounded-full blur-[120px] pointer-events-none"></div>
+      {/* 3D Architectural Blueprint Geometric Background (Zero external images) */}
+      <div className="absolute inset-0 z-0 bg-[#07080b]">
+        {/* Subtle grid pattern */}
+        <div 
+          className="absolute inset-0 opacity-[0.08]" 
+          style={{
+            backgroundImage: `linear-gradient(to right, #d4af37 1px, transparent 1px), linear-gradient(to bottom, #d4af37 1px, transparent 1px)`,
+            backgroundSize: '48px 48px'
+          }}
+        ></div>
+
+        {/* 3D Depth Radial Gradients & Metallic Glows */}
+        <div className="absolute inset-0 bg-radial from-[#181c28]/70 via-[#0a0c12]/90 to-[#07080b]"></div>
+        <div className="absolute top-1/4 left-1/4 -translate-x-1/2 w-[550px] h-[550px] bg-[#d4af37]/12 rounded-full blur-[160px] pointer-events-none"></div>
+        <div className="absolute bottom-10 right-10 w-96 h-96 bg-[#d4af37]/8 rounded-full blur-[140px] pointer-events-none"></div>
+
+        {/* Structural Blueprint Accent Lines */}
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#d4af37]/40 to-transparent"></div>
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#d4af37]/30 to-transparent"></div>
       </div>
 
       {/* Hero Content Container */}
@@ -150,48 +151,61 @@ export const Hero: React.FC<HeroProps> = ({
             </div>
           </div>
 
-          {/* Hero Right Column: 3D Interactive Founder Card with Real Face */}
+          {/* Hero Right Column: 3D Interactive Executive Emblem with Official Logo */}
           <div className="lg:col-span-4 flex justify-center items-center mt-8 lg:mt-0">
             <Tilt3D maxTilt={10} scale={1.03} className="w-full max-w-sm">
-              <div className="relative w-full rounded-3xl bg-gradient-to-br from-[#1c202d]/95 via-[#131620]/95 to-[#090b10]/95 border-2 border-[#d4af37]/50 shadow-[0_25px_60px_rgba(0,0,0,0.9),0_0_35px_rgba(212,175,55,0.18)] backdrop-blur-xl p-5 sm:p-6 text-center group transition-all duration-300 hover:border-[#d4af37] overflow-hidden">
+              <div className="relative w-full rounded-3xl bg-gradient-to-br from-[#1c202d]/95 via-[#131620]/95 to-[#090b10]/95 border-2 border-[#d4af37]/50 shadow-[0_25px_60px_rgba(0,0,0,0.9),0_0_35px_rgba(212,175,55,0.18)] backdrop-blur-xl p-6 sm:p-7 text-center group transition-all duration-300 hover:border-[#d4af37] overflow-hidden">
                 {/* Top gold accent line */}
                 <div className="absolute top-0 left-1/4 right-1/4 h-1 bg-gradient-to-r from-transparent via-[#fce089] to-transparent"></div>
 
-                {/* Proprietor Real Face Image Showcase with 3D Bevel */}
-                <div className="relative mx-auto rounded-2xl p-1.5 bg-gradient-to-b from-[#d4af37] via-[#aa7c11] to-[#12141c] shadow-2xl max-w-[220px] sm:max-w-[250px] overflow-hidden mb-4 group-hover:scale-[1.02] transition-transform duration-300">
-                  <ResponsiveImage
-                    id="hero-proprietor-real-face"
-                    src="/images/proprietor/proprietor.jpg"
-                    alt="MD. SOHANUR ROHOMAN SOHAN - Proprietor"
-                    layout="card"
-                    priority={true}
-                    className="w-full h-auto rounded-xl object-cover"
-                    containerClassName="w-full h-auto rounded-xl"
-                  />
-                  
-                  {/* Floating 3D Verified Badge */}
-                  <div className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-[#08090d]/92 border border-[#d4af37] flex items-center gap-1.5 shadow-xl backdrop-blur-md">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-[#d4af37]" />
-                    <span className="text-[10px] font-black text-[#fce089] uppercase tracking-wider font-mono">ESTD 2016</span>
+                {/* Company Official Logo Centerpiece with 3D Bevel */}
+                <div className="relative mx-auto rounded-3xl p-3 bg-gradient-to-b from-[#d4af37] via-[#aa7c11] to-[#12141c] shadow-2xl max-w-[180px] sm:max-w-[200px] overflow-hidden mb-5 group-hover:scale-[1.03] transition-transform duration-300">
+                  <div className="w-full aspect-square rounded-2xl bg-[#090b10] p-4 flex flex-col items-center justify-center border border-[#d4af37]/40 shadow-inner relative">
+                    <Logo variant="compact" size={110} />
+                    
+                    {/* Floating 3D Verified Badge */}
+                    <div className="absolute top-2 right-2 px-2 py-0.5 rounded-md bg-[#08090d]/95 border border-[#d4af37] flex items-center gap-1 shadow-xl backdrop-blur-md">
+                      <CheckCircle2 className="w-3 h-3 text-[#d4af37]" />
+                      <span className="text-[9px] font-black text-[#fce089] uppercase tracking-wider font-mono">ESTD 2016</span>
+                    </div>
                   </div>
                 </div>
 
                 {/* Proprietor Name & Credentials */}
                 <div>
-                  <span className="text-[10px] font-extrabold text-[#d4af37] uppercase tracking-widest block font-['Montserrat']">
-                    PROPRIETOR &amp; FOUNDER
-                  </span>
-                  <h3 className="text-lg sm:text-xl font-black text-white font-['Montserrat'] tracking-wide mt-0.5">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#d4af37]/15 border border-[#d4af37]/35 text-[#fce089] text-[10px] font-black tracking-widest uppercase mb-2">
+                    <UserCheck className="w-3 h-3 text-[#d4af37]" />
+                    <span>FOUNDER &amp; PROPRIETOR</span>
+                  </div>
+                  
+                  <h3 className="text-xl sm:text-2xl font-black text-white font-['Montserrat'] tracking-wide">
                     MD. SOHANUR ROHOMAN SOHAN
                   </h3>
-                  <p className="text-xs text-gray-300 font-medium mt-1">
-                    Sohanur Construction &amp; Manpower Solution
+                  <p className="text-xs text-[#d4af37] font-semibold mt-1 uppercase tracking-wider">
+                    SOHANUR CONSTRUCTION &amp; MANPOWER SOLUTION
                   </p>
+
+                  <div className="mt-3 py-2 px-3 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-around text-center">
+                    <div>
+                      <div className="text-xs font-black text-[#fce089] font-mono">10+</div>
+                      <div className="text-[9px] text-gray-400 uppercase">Years Exp</div>
+                    </div>
+                    <div className="w-px h-6 bg-white/10"></div>
+                    <div>
+                      <div className="text-xs font-black text-[#fce089] font-mono">100+</div>
+                      <div className="text-[9px] text-gray-400 uppercase">Projects</div>
+                    </div>
+                    <div className="w-px h-6 bg-white/10"></div>
+                    <div>
+                      <div className="text-xs font-black text-[#fce089] font-mono">250+</div>
+                      <div className="text-[9px] text-gray-400 uppercase">Workers</div>
+                    </div>
+                  </div>
 
                   {/* Verification Status */}
                   <div className="mt-3 pt-3 border-t border-white/10 flex items-center justify-center gap-1.5 text-[11px] text-[#fce089] font-semibold">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-[#d4af37]" />
-                    <span>Verified Corporate Leadership</span>
+                    <Shield className="w-3.5 h-3.5 text-[#d4af37]" />
+                    <span>Government Registered Contractor</span>
                   </div>
 
                   {/* Direct Contact Button */}

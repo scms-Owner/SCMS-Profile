@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { PORTFOLIO_PROJECTS } from '../data/companyData';
 import { ProjectItem } from '../types';
-import { ResponsiveImage } from './ResponsiveImage';
 import { Tilt3D } from './Tilt3D';
 import {
   Building2,
@@ -12,7 +11,11 @@ import {
   X,
   Layers,
   Sparkles,
-  Award
+  Award,
+  Calendar,
+  ShieldCheck,
+  HardHat,
+  Compass
 } from 'lucide-react';
 
 interface ProjectPortfolioProps {
@@ -93,22 +96,25 @@ export const ProjectPortfolio: React.FC<ProjectPortfolioProps> = ({ onEnquirePro
                 {/* 3D Top Accent Line */}
                 <div className="h-1 w-full bg-gradient-to-r from-transparent via-[#fce089]/60 to-transparent group-hover:via-[#fce089] transition-all"></div>
 
-                {/* Image Container with Badges */}
-                <div className="relative h-56 w-full overflow-hidden bg-gray-900">
-                  <ResponsiveImage
-                    id={`portfolio-img-${project.id}`}
-                    src={project.image}
-                    alt={project.name}
-                    layout="card"
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    containerClassName="w-full h-full absolute inset-0"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0f1118] via-transparent to-black/40 pointer-events-none"></div>
+                {/* 3D Architectural Blueprint Banner (Zero external image dependencies) */}
+                <div className="relative h-48 w-full overflow-hidden bg-gradient-to-br from-[#1b202e] via-[#11141d] to-[#0a0c12] p-4 flex flex-col justify-between border-b border-[#d4af37]/25 group-hover:border-[#d4af37]/60 transition-colors">
+                  {/* Subtle Grid Lines */}
+                  <div
+                    className="absolute inset-0 opacity-[0.06] pointer-events-none"
+                    style={{
+                      backgroundImage: `linear-gradient(to right, #d4af37 1px, transparent 1px), linear-gradient(to bottom, #d4af37 1px, transparent 1px)`,
+                      backgroundSize: '24px 24px'
+                    }}
+                  ></div>
 
-                  {/* Status Badge */}
-                  <div className="absolute top-3 right-3">
+                  <div className="relative z-10 flex items-center justify-between">
+                    <div className="px-2.5 py-1 rounded bg-black/85 backdrop-blur-md text-[10px] font-black text-[#fce089] border border-[#d4af37]/40 shadow-sm font-mono">
+                      {project.category} • {project.projectType}
+                    </div>
+
+                    {/* Status Badge */}
                     <span
-                      className={`px-2.5 py-1 rounded-md text-[10px] font-black tracking-wider uppercase border backdrop-blur-md shadow-md ${
+                      className={`px-2.5 py-0.5 rounded-md text-[10px] font-black tracking-wider uppercase border backdrop-blur-md shadow-md ${
                         project.status === 'COMPLETED'
                           ? 'bg-emerald-950/85 text-emerald-300 border-emerald-500/50'
                           : 'bg-amber-950/85 text-[#fce089] border-[#d4af37]/50'
@@ -118,9 +124,19 @@ export const ProjectPortfolio: React.FC<ProjectPortfolioProps> = ({ onEnquirePro
                     </span>
                   </div>
 
-                  {/* Project Category Tag */}
-                  <div className="absolute bottom-3 left-3 px-2.5 py-1 rounded bg-black/85 backdrop-blur-md text-[10px] font-black text-[#fce089] border border-[#d4af37]/40 shadow-sm font-mono">
-                    {project.category} • {project.projectType}
+                  {/* Central 3D Vector Building Icon */}
+                  <div className="relative z-10 flex items-center justify-center my-auto">
+                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#d4af37]/20 to-black/70 border-2 border-[#d4af37]/50 flex items-center justify-center shadow-[0_8px_20px_rgba(0,0,0,0.7)] group-hover:scale-110 group-hover:border-[#fce089] transition-all duration-300">
+                      <Building2 className="w-8 h-8 text-[#fce089]" />
+                    </div>
+                  </div>
+
+                  <div className="relative z-10 flex items-center justify-between text-[10px] font-mono text-gray-400">
+                    <span className="flex items-center gap-1 text-[#fce089]/90">
+                      <Compass className="w-3 h-3 text-[#d4af37]" />
+                      SOHANUR PROFILE
+                    </span>
+                    <span className="text-gray-400 font-bold">{project.status}</span>
                   </div>
                 </div>
 
@@ -203,17 +219,36 @@ export const ProjectPortfolio: React.FC<ProjectPortfolioProps> = ({ onEnquirePro
 
             {/* Modal Content */}
             <div className="overflow-y-auto py-5 space-y-6">
-              {/* Main Image */}
-              <div className="relative h-64 sm:h-80 w-full rounded-xl overflow-hidden">
-                <ResponsiveImage
-                  id={`portfolio-modal-main-${selectedProject.id}`}
-                  src={selectedProject.image}
-                  alt={selectedProject.name}
-                  layout="fullscreen"
-                  priority
-                  className="w-full h-full object-cover"
-                  containerClassName="w-full h-full absolute inset-0"
-                />
+              {/* 3D Blueprint Header Banner */}
+              <div className="relative h-44 w-full rounded-xl overflow-hidden bg-gradient-to-br from-[#1b202e] via-[#121520] to-[#0a0c12] p-6 flex flex-col justify-between border border-[#d4af37]/40 shadow-inner">
+                <div className="flex items-center justify-between">
+                  <span className="px-3 py-1 rounded-md bg-black/85 border border-[#d4af37]/40 text-[#fce089] text-xs font-mono font-bold">
+                    {selectedProject.category} • {selectedProject.projectType}
+                  </span>
+                  <span className="text-[#fce089] font-mono text-xs font-bold">
+                    STATUS: {selectedProject.status}
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-4 my-auto">
+                  <div className="w-14 h-14 rounded-2xl bg-[#d4af37]/20 border border-[#d4af37]/60 flex items-center justify-center shadow-lg">
+                    <Building2 className="w-7 h-7 text-[#fce089]" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-black text-white font-['Montserrat']">
+                      {selectedProject.name}
+                    </h3>
+                    <p className="text-xs text-gray-300 flex items-center gap-1 mt-1">
+                      <MapPin className="w-3.5 h-3.5 text-[#d4af37]" />
+                      {selectedProject.location}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between text-[11px] text-gray-400 font-mono pt-2 border-t border-white/10">
+                  <span className="text-[#4ade80] font-bold">STATUS: {selectedProject.status}</span>
+                  <span className="text-[#d4af37]">SOHANUR VERIFIED SITE</span>
+                </div>
               </div>
 
               {/* Description */}
@@ -240,29 +275,6 @@ export const ProjectPortfolio: React.FC<ProjectPortfolioProps> = ({ onEnquirePro
                   ))}
                 </div>
               </div>
-
-              {/* Project Gallery Preview */}
-              {selectedProject.gallery.length > 0 && (
-                <div>
-                  <h4 className="text-xs font-bold text-[#d4af37] uppercase tracking-wider mb-2">
-                    Project Gallery
-                  </h4>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                    {selectedProject.gallery.map((imgUrl, idx) => (
-                      <div key={idx} className="relative h-28 rounded-lg overflow-hidden bg-gray-900 border border-white/10">
-                        <ResponsiveImage
-                          id={`portfolio-modal-thumb-${selectedProject.id}-${idx}`}
-                          src={imgUrl}
-                          alt={`${selectedProject.name} Gallery ${idx + 1}`}
-                          layout="thumb"
-                          className="w-full h-full object-cover"
-                          containerClassName="w-full h-full absolute inset-0"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
 
             {/* Modal Footer */}

@@ -2,12 +2,41 @@
  * Image Utilities for WebP Conversion and Responsive SrcSet Generation
  */
 
+/**
+ * Normalizes an asset URL to resolve correctly across subpath hostings like GitHub Pages
+ * (e.g. /SCMS-Profile/) as well as standard root hostings.
+ */
+export const normalizeAssetUrl = (url: string): string => {
+  if (!url) return '';
+
+  // External URLs or data URIs
+  if (
+    url.startsWith('http://') ||
+    url.startsWith('https://') ||
+    url.startsWith('data:') ||
+    url.startsWith('blob:')
+  ) {
+    return url;
+  }
+
+  // Strip leading slashes and dot-slashes
+  const cleanPath = url.replace(/^(\.\/|\/)+/, '');
+  const meta = import.meta as unknown as { env?: { BASE_URL?: string } };
+  const base = meta?.env?.BASE_URL || './';
+
+  if (base === './') {
+    return `./${cleanPath}`;
+  }
+
+  return base.endsWith('/') ? `${base}${cleanPath}` : `${base}/${cleanPath}`;
+};
+
 export const getWebpUrl = (url: string, width?: number, quality = 80): string => {
   if (!url) return '';
 
-  // Local static images in public folder - return the exact local path so uploaded .jpg/.png/.webp load directly
-  if (url.startsWith('/') || !url.startsWith('http')) {
-    return url;
+  // Local static images in public folder - return normalized local path so uploaded .jpg/.png/.webp load directly
+  if (url.startsWith('/') || url.startsWith('./') || !url.startsWith('http')) {
+    return normalizeAssetUrl(url);
   }
 
   // Unsplash CDN URLs - inject WebP format and width
