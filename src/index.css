@@ -1,0 +1,111 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: #08090d;
+    color: #e5e7eb;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: -0.02em;
+  }
+}
+
+/* 3D Perspective & Depth System */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.perspective-2000 {
+  perspective: 2000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+/* Luxury 3D Gold & Metallic Effects */
+.gold-gradient-text {
+  background: linear-gradient(135deg, #fff3c4 0%, #fce089 25%, #d4af37 60%, #aa7c11 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-metallic-text {
+  background: linear-gradient(180deg, #ffffff 0%, #fce089 40%, #d4af37 75%, #8c670b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 8px rgba(212, 175, 55, 0.3));
+}
+
+.gold-gradient-bg {
+  background: linear-gradient(135deg, #d4af37 0%, #f3d068 50%, #b8860b 100%);
+}
+
+.gold-3d-bevel {
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  box-shadow: 
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.25),
+    inset 0 -1px 2px 0 rgba(0, 0, 0, 0.6),
+    0 15px 35px -5px rgba(0, 0, 0, 0.8),
+    0 0 20px 0 rgba(212, 175, 55, 0.15);
+}
+
+.card-3d-depth {
+  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), border-color 0.3s ease;
+  transform: translateZ(0);
+}
+
+.card-3d-depth:hover {
+  transform: translateY(-8px) scale(1.015);
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.9),
+    0 0 30px -5px rgba(212, 175, 55, 0.28),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.2);
+  border-color: rgba(212, 175, 55, 0.7);
+}
+
+/* 3D Isometric Blueprint Grid */
+.isometric-grid {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(212, 175, 55, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(212, 175, 55, 0.05) 1px, transparent 1px);
+}
+
+/* 3D Glassmorphism Panel */
+.glass-panel-3d {
+  background: linear-gradient(135deg, rgba(24, 27, 36, 0.85) 0%, rgba(14, 16, 22, 0.92) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  box-shadow: 
+    inset 0 1px 1px rgba(255, 255, 255, 0.15),
+    0 20px 40px rgba(0, 0, 0, 0.7),
+    0 0 25px rgba(212, 175, 55, 0.1);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #08090d;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #252834;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d4af37;
+}

@@ -1,0 +1,13 @@
+[
+  {
+    "id": "inq-1788981562450-440",
+    "type": "quote",
+    "fullName": "Test User",
+    "phone": "01700000000",
+    "email": "test@example.com",
+    "projectLocation": "Naogaon",
+    "projectType": "Residential",
+    "requiredService": "Building Construction",
+    "submittedAt": "2026-09-09T19:19:22.450Z"
+  }
+]
