@@ -127,9 +127,11 @@ export const ManpowerSection: React.FC<ManpowerSectionProps> = ({ onRequestWorkf
                 <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#fce089]/60 to-transparent group-hover:via-[#fce089] transition-all"></div>
 
                 <div>
-                  {/* 3D Trade Vector Icon Header */}
-                  <div className="relative h-32 w-full rounded-xl overflow-hidden mb-4 bg-gradient-to-br from-[#1c202d] via-[#12141c] to-[#0a0c12] p-3 flex flex-col justify-between border border-[#d4af37]/30 group-hover:border-[#d4af37]/70 transition-colors shadow-inner">
-                    <div className="flex items-center justify-between">
+                  {/* Worker image / trade header */}
+                  <div className="relative h-32 w-full rounded-xl overflow-hidden mb-4 bg-gradient-to-br from-[#1c202d] via-[#12141c] to-[#0a0c12] flex flex-col justify-between border border-[#d4af37]/30 group-hover:border-[#d4af37]/70 transition-colors shadow-inner">
+                    {worker.image ? <img src={worker.image} alt={worker.name} className="absolute inset-0 h-full w-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" /> : null}
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0c12]/90 via-[#0a0c12]/25 to-transparent pointer-events-none"></div>
+                    <div className="relative z-10 flex items-center justify-between">
                       <div className="w-8 h-8 rounded-lg bg-[#08090d]/90 border border-[#d4af37]/50 flex items-center justify-center shadow-md">
                         {getWorkerIcon(worker.iconName)}
                       </div>
@@ -140,13 +142,13 @@ export const ManpowerSection: React.FC<ManpowerSectionProps> = ({ onRequestWorkf
                       )}
                     </div>
 
-                    <div className="flex items-center justify-center my-auto">
+                    <div className="relative z-10 flex items-center justify-center my-auto">
                       <div className="w-12 h-12 rounded-xl bg-[#d4af37]/15 border border-[#d4af37]/40 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
                         {getWorkerIcon(worker.iconName)}
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between text-[9px] text-gray-400 font-mono">
+                    <div className="relative z-10 flex items-center justify-between text-[9px] text-gray-400 font-mono">
                       <span className="text-[#4ade80] font-bold flex items-center gap-1">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#22c55e] animate-pulse"></span>
                         READY
