@@ -128,7 +128,14 @@ export const AboutSection: React.FC = () => {
             <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
               {/* Executive Seal / Official Emblem */}
               <div className="w-32 sm:w-44 rounded-2xl bg-gradient-to-b from-[#d4af37] via-[#aa7c11] to-[#12141c] p-2 shadow-2xl flex-shrink-0 text-center relative group">
-                <div className="w-full aspect-square rounded-xl bg-[#0b0d13] p-4 flex flex-col items-center justify-center border border-[#d4af37]/40 shadow-inner">
+                <div className="w-full aspect-square rounded-xl bg-[#0b0d13] p-2 flex flex-col items-center justify-center border border-[#d4af37]/40 shadow-inner overflow-hidden">
+                  {COMPANY_INFO.proprietorPhoto ? (
+                    <img src={COMPANY_INFO.proprietorPhoto} alt={COMPANY_INFO.proprietor} className="h-full w-full rounded-lg object-cover" />
+                  ) : (
+                    <div className="w-16 h-16 rounded-2xl bg-[#d4af37]/15 border border-[#d4af37]/50 flex items-center justify-center mb-2">
+                      <UserCheck className="w-9 h-9 text-[#fce089]" />
+                    </div>
+                  )}
                   <div className="w-16 h-16 rounded-2xl bg-[#d4af37]/15 border border-[#d4af37]/50 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
                     <UserCheck className="w-9 h-9 text-[#fce089]" />
                   </div>
