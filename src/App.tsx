@@ -20,10 +20,10 @@ import { loadRemoteSiteData } from './lib/siteData';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState<string>('home');
-  const [isAdminRoute, setIsAdminRoute] = useState(() => window.location.hash === '#/admin');
+  const [isAdminRoute, setIsAdminRoute] = useState(() => window.location.hash.startsWith('#/admin') || new URLSearchParams(window.location.search).get('admin') === '1');
 
   useEffect(() => {
-    const onHash = () => setIsAdminRoute(window.location.hash === '#/admin');
+    const onHash = () => setIsAdminRoute(window.location.hash.startsWith('#/admin') || new URLSearchParams(window.location.search).get('admin') === '1');
     window.addEventListener('hashchange', onHash);
     loadRemoteSiteData();
     return () => window.removeEventListener('hashchange', onHash);
