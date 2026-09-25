@@ -56,7 +56,13 @@ export function AdminPanel() {
   const [sessionEmail,setSessionEmail]=useState('');
   const [loading,setLoading]=useState(true);
   const [loginEmail,setLoginEmail]=useState(ADMIN_EMAIL);
+  const [loginPassword,setLoginPassword]=useState('');
   const [loginSent,setLoginSent]=useState(false);
+  const [recoveryMode,setRecoveryMode]=useState(false);
+  const [forgotSent,setForgotSent]=useState(false);
+  const [newPassword,setNewPassword]=useState('');
+  const [confirmPassword,setConfirmPassword]=useState('');
+  const [passwordBusy,setPasswordBusy]=useState(false);
   const [error,setError]=useState('');
   const [notice,setNotice]=useState('');
 
@@ -122,7 +128,19 @@ export function AdminPanel() {
     setLoading(false);
   };
 
-  useEffect(()=>{ refresh().catch(e=>{setError(e.message);setLoading(false)}); const {data}=supabase.auth.onAuthStateChange(()=>refresh().catch(()=>{})); return ()=>data.subscription.unsubscribe(); },[]);
+  useEffect(()=>{
+    const {data}=supabase.auth.onAuthStateChange((event)=>{
+      if(event==='PASSWORD_RECOVERY') {
+        setRecoveryMode(true);
+        setLoading(false);
+        setSessionEmail('');
+        return;
+      }
+      refresh().catch(e=>{setError(e.message);setLoading(false)});
+    });
+    refresh().catch(e=>{setError(e.message);setLoading(false)});
+    return ()=>data.subscription.unsubscribe();
+  },[]);
 
   const save = async (table:string, row:any, id?:any) => {
     setError(''); setNotice('');
@@ -138,25 +156,76 @@ export function AdminPanel() {
     if(error) setError(error.message); else { setNotice('Deleted.'); await refresh(); }
   };
 
-  const sendMagicLink = async () => {
+  const signInWithPassword = async () => {
     setError(''); setLoginSent(false);
     if(loginEmail.toLowerCase() !== ADMIN_EMAIL) { setError('Only the authorized admin email can sign in.'); return; }
-    const {error}=await supabase.auth.signInWithOtp({email:ADMIN_EMAIL, options:{emailRedirectTo:window.location.origin + window.location.pathname + '?admin=1'}});
-    if(error) setError(error.message); else setLoginSent(true);
+    if(!loginPassword) { setError('Enter your password.'); return; }
+    const {error}=await supabase.auth.signInWithPassword({email:ADMIN_EMAIL,password:loginPassword});
+    if(error) setError('Login failed. Check your password and try again.');
+  };
+
+  const sendPasswordReset = async () => {
+    setError(''); setForgotSent(false);
+    if(loginEmail.toLowerCase() !== ADMIN_EMAIL) { setError('Only the authorized admin email can reset the password.'); return; }
+    const redirectTo=window.location.origin + window.location.pathname + '?admin=1';
+    const {error}=await supabase.auth.resetPasswordForEmail(ADMIN_EMAIL,{redirectTo});
+    if(error) setError(error.message); else setForgotSent(true);
+  };
+
+  const updatePassword = async () => {
+    setError('');
+    if(newPassword.length < 8) { setError('Password must be at least 8 characters.'); return; }
+    if(newPassword !== confirmPassword) { setError('Passwords do not match.'); return; }
+    setPasswordBusy(true);
+    const {error}=await supabase.auth.updateUser({password:newPassword});
+    setPasswordBusy(false);
+    if(error) { setError(error.message); return; }
+    setRecoveryMode(false);
+    setNewPassword(''); setConfirmPassword('');
+    setNotice('Password updated successfully. You can now use the new password to log in.');
+    await refresh();
+  };
+
+  const changePassword = async () => {
+    setError('');
+    if(newPassword.length < 8) { setError('Password must be at least 8 characters.'); return; }
+    if(newPassword !== confirmPassword) { setError('Passwords do not match.'); return; }
+    setPasswordBusy(true);
+    const {error}=await supabase.auth.updateUser({password:newPassword});
+    setPasswordBusy(false);
+    if(error) { setError(error.message); return; }
+    setNewPassword(''); setConfirmPassword('');
+    setNotice('Password changed successfully.');
   };
 
   if(loading) return <div className="min-h-screen bg-[#08090d] flex items-center justify-center text-gray-300">Loading admin…</div>;
+
+  if(recoveryMode) return <div className="min-h-screen bg-[#08090d] px-4 py-12 text-white">
+    <div className="mx-auto max-w-md rounded-3xl border border-[#d4af37]/25 bg-[#10131a] p-7 shadow-2xl">
+      <div className="mb-6">
+        <div className="text-xs font-bold uppercase tracking-[0.25em] text-[#d4af37]">SCMS ADMIN</div>
+        <h1 className="mt-2 text-2xl font-bold">Set a new password</h1>
+        <p className="mt-2 text-sm text-gray-400">Choose a new password for the administrator account.</p>
+      </div>
+      <Field label="New password" type="password" value={newPassword} onChange={setNewPassword} />
+      <div className="mt-4"><Field label="Confirm password" type="password" value={confirmPassword} onChange={setConfirmPassword} /></div>
+      <button disabled={passwordBusy} onClick={updatePassword} className="mt-4 w-full rounded-xl bg-[#d4af37] px-4 py-3 font-bold text-black disabled:opacity-50">{passwordBusy ? 'Saving…' : 'Save new password'}</button>
+      {error && <p className="mt-4 rounded-xl border border-red-500/20 bg-red-500/10 p-3 text-sm text-red-300">{error}</p>}
+    </div>
+  </div>;
 
   if(!sessionEmail) return <div className="min-h-screen bg-[#08090d] px-4 py-12 text-white">
     <div className="mx-auto max-w-md rounded-3xl border border-[#d4af37]/25 bg-[#10131a] p-7 shadow-2xl">
       <div className="mb-6">
         <div className="text-xs font-bold uppercase tracking-[0.25em] text-[#d4af37]">SCMS ADMIN</div>
         <h1 className="mt-2 text-2xl font-bold">Secure website management</h1>
-        <p className="mt-2 text-sm text-gray-400">A magic link will be sent to the authorized administrator email.</p>
+        <p className="mt-2 text-sm text-gray-400">Sign in with the authorized administrator email and password.</p>
       </div>
       <Field label="Admin email" value={loginEmail} onChange={setLoginEmail} />
-      <button onClick={sendMagicLink} className="mt-4 w-full rounded-xl bg-[#d4af37] px-4 py-3 font-bold text-black hover:bg-[#e6c45a]">Send secure login link</button>
-      {loginSent && <p className="mt-4 rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-3 text-sm text-emerald-300">Check {ADMIN_EMAIL} and open the login link.</p>}
+      <div className="mt-4"><Field label="Password" type="password" value={loginPassword} onChange={setLoginPassword} /></div>
+      <button onClick={signInWithPassword} className="mt-4 w-full rounded-xl bg-[#d4af37] px-4 py-3 font-bold text-black hover:bg-[#e6c45a]">Login</button>
+      <button onClick={sendPasswordReset} className="mt-3 w-full rounded-xl border border-white/10 px-4 py-3 text-sm text-gray-300 hover:bg-white/5">Forgot password?</button>
+      {forgotSent && <p className="mt-4 rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-3 text-sm text-emerald-300">Password reset email sent to {ADMIN_EMAIL}. Open it and choose a new password.</p>}
       {error && <p className="mt-4 rounded-xl border border-red-500/20 bg-red-500/10 p-3 text-sm text-red-300">{error}</p>}
       <a href={window.location.pathname} className="mt-6 block text-center text-xs text-gray-500 hover:text-white">← Back to website</a>
     </div>
@@ -183,6 +252,15 @@ export function AdminPanel() {
       {tab==='overview' && <div className="grid gap-5 md:grid-cols-4">
         {[['Services',services.length],['Manpower',workers.length],['Projects',projects.length],['Gallery',gallery.length]].map(([a,b])=><div className={cardClass} key={String(a)}><div className="text-sm text-gray-400">{a}</div><div className="mt-2 text-3xl font-bold text-[#d4af37]">{b}</div></div>)}
         <div className={cardClass+' md:col-span-4'}><h2 className="text-xl font-bold">Website content is now database-driven</h2><p className="mt-2 max-w-3xl text-sm leading-6 text-gray-400">Changes saved here are stored in Supabase. The public website keeps the existing design and automatically loads visible content from the database.</p></div>
+        <div className={cardClass+' md:col-span-4'}>
+          <h2 className="text-xl font-bold">Change admin password</h2>
+          <p className="mt-2 text-sm text-gray-400">Change your password anytime while signed in.</p>
+          <div className="mt-4 grid gap-4 md:grid-cols-2">
+            <Field label="New password" type="password" value={newPassword} onChange={setNewPassword}/>
+            <Field label="Confirm new password" type="password" value={confirmPassword} onChange={setConfirmPassword}/>
+          </div>
+          <button disabled={passwordBusy} onClick={changePassword} className="mt-4 rounded-xl bg-[#d4af37] px-5 py-3 font-bold text-black disabled:opacity-50">{passwordBusy ? 'Saving…' : 'Change password'}</button>
+        </div>
       </div>}
 
       {tab==='company' && <div className={cardClass+' space-y-4'}>
