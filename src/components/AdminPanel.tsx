@@ -141,7 +141,7 @@ export function AdminPanel() {
   const sendMagicLink = async () => {
     setError(''); setLoginSent(false);
     if(loginEmail.toLowerCase() !== ADMIN_EMAIL) { setError('Only the authorized admin email can sign in.'); return; }
-    const {error}=await supabase.auth.signInWithOtp({email:ADMIN_EMAIL, options:{emailRedirectTo:window.location.origin + window.location.pathname + '#/admin'}});
+    const {error}=await supabase.auth.signInWithOtp({email:ADMIN_EMAIL, options:{emailRedirectTo:window.location.origin + window.location.pathname + '?admin=1'}});
     if(error) setError(error.message); else setLoginSent(true);
   };
 
