@@ -29,8 +29,6 @@ export default function App() {
     return () => window.removeEventListener('hashchange', onHash);
   }, []);
 
-  if (isAdminRoute) return <AdminPanel />;
-
   // Smooth scroll and active section observer
   useEffect(() => {
     const handleScroll = () => {
@@ -70,6 +68,8 @@ export default function App() {
       el.scrollIntoView({ behavior: 'smooth' });
     }
   };
+
+  if (isAdminRoute) return <AdminPanel />;
 
   return (
     <div className="min-h-screen bg-[#0b0c10] text-[#e5e7eb] flex flex-col font-['Plus_Jakarta_Sans']">
