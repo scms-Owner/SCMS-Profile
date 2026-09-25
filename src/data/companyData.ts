@@ -1,6 +1,6 @@
 import { ServiceItem, WorkerCategory, ProjectItem, GalleryItem } from '../types';
 
-export const COMPANY_INFO = {
+export let COMPANY_INFO = {
   name: "SOHANUR CONSTRUCTION & MANPOWER SOLUTION",
   shortName: "SCMS Bangladesh",
   tagline: "BUILDING TRUST, DELIVERING QUALITY",
@@ -21,7 +21,7 @@ export const COMPANY_INFO = {
   defaultWhatsAppMessage: `Hello SOHANUR CONSTRUCTION & MANPOWER SOLUTION,\n\nI am interested in your services.\n\nMy requirement:\nProject Location:\nService Required:\nAdditional Details:\n\nPlease contact me.`
 };
 
-export const CORE_SERVICES: ServiceItem[] = [
+export let CORE_SERVICES: ServiceItem[] = [
   {
     id: "service-01",
     number: "SERVICE 01",
@@ -152,7 +152,7 @@ export const CORE_SERVICES: ServiceItem[] = [
   }
 ];
 
-export const WORKER_CATEGORIES: WorkerCategory[] = [
+export let WORKER_CATEGORIES: WorkerCategory[] = [
   {
     id: "rod-mistri",
     name: "ROD MISTRI",
@@ -255,7 +255,7 @@ export const WORKER_CATEGORIES: WorkerCategory[] = [
   }
 ];
 
-export const CONTRACTING_SERVICES_LIST = [
+export let CONTRACTING_SERVICES_LIST = [
   "Building construction",
   "RCC work",
   "Rod binding",
@@ -269,7 +269,7 @@ export const CONTRACTING_SERVICES_LIST = [
   "Site supervision"
 ];
 
-export const HOW_IT_WORKS_STEPS = [
+export let HOW_IT_WORKS_STEPS = [
   {
     step: "01",
     title: "SEND YOUR REQUIREMENT",
@@ -292,7 +292,7 @@ export const HOW_IT_WORKS_STEPS = [
   }
 ];
 
-export const WHY_CHOOSE_ITEMS = [
+export let WHY_CHOOSE_ITEMS = [
   {
     title: "Skilled & Experienced Workforce",
     desc: "Every craftsman and helper in our network has verified practical experience across diverse civil projects."
@@ -332,7 +332,7 @@ export const WHY_CHOOSE_ITEMS = [
 ];
 
 // Official Completed Projects as featured in SCMS Corporate Profile 2026 (Page 07)
-export const PORTFOLIO_PROJECTS: ProjectItem[] = [
+export let PORTFOLIO_PROJECTS: ProjectItem[] = [
   {
     id: "proj-01",
     name: "Residential Building (G+5)",
@@ -425,7 +425,7 @@ export const PORTFOLIO_PROJECTS: ProjectItem[] = [
   }
 ];
 
-export const GALLERY_ITEMS: GalleryItem[] = [
+export let GALLERY_ITEMS: GalleryItem[] = [
   {
     id: "gal-1",
     title: "High-Rise Concrete Pouring & Crane Operation",
@@ -490,3 +490,24 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     location: "Jobsite Briefing"
   }
 ];
+
+
+export function applyRemoteCompanyData(data: {
+  companyInfo?: Partial<typeof COMPANY_INFO>;
+  services?: ServiceItem[];
+  workers?: WorkerCategory[];
+  contracting?: typeof CONTRACTING_SERVICES_LIST;
+  howItWorks?: typeof HOW_IT_WORKS_STEPS;
+  whyChoose?: typeof WHY_CHOOSE_ITEMS;
+  projects?: ProjectItem[];
+  gallery?: GalleryItem[];
+}) {
+  if (data.companyInfo) COMPANY_INFO = { ...COMPANY_INFO, ...data.companyInfo };
+  if (data.services?.length) CORE_SERVICES = data.services;
+  if (data.workers?.length) WORKER_CATEGORIES = data.workers;
+  if (data.contracting?.length) CONTRACTING_SERVICES_LIST = data.contracting;
+  if (data.howItWorks?.length) HOW_IT_WORKS_STEPS = data.howItWorks;
+  if (data.whyChoose?.length) WHY_CHOOSE_ITEMS = data.whyChoose;
+  if (data.projects?.length) PORTFOLIO_PROJECTS = data.projects;
+  if (data.gallery?.length) GALLERY_ITEMS = data.gallery;
+}
