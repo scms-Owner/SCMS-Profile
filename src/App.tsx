@@ -21,11 +21,12 @@ import { loadRemoteSiteData } from './lib/siteData';
 export default function App() {
   const [activeSection, setActiveSection] = useState<string>('home');
   const [isAdminRoute, setIsAdminRoute] = useState(() => window.location.hash.startsWith('#/admin') || new URLSearchParams(window.location.search).get('admin') === '1');
+  const [, setSiteDataVersion] = useState(0);
 
   useEffect(() => {
     const onHash = () => setIsAdminRoute(window.location.hash.startsWith('#/admin') || new URLSearchParams(window.location.search).get('admin') === '1');
     window.addEventListener('hashchange', onHash);
-    loadRemoteSiteData();
+    loadRemoteSiteData().then(() => setSiteDataVersion(v => v + 1));
     return () => window.removeEventListener('hashchange', onHash);
   }, []);
 
