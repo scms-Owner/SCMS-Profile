@@ -9,7 +9,7 @@ export interface ProfilePageData {
   image?: string;
 }
 
-export const PROFILE_PAGES_META = [
+export let PROFILE_PAGES_META = [
   { pageNumber: 1, title: "Cover Page", label: "কভার পেজ (Corporate Profile 2026)" },
   { pageNumber: 2, title: "About Company", label: "কোম্পানি পরিচিতি (About Us & Vision)" },
   { pageNumber: 3, title: "Proprietor's Message", label: "প্রোপাইটরের বাণী (Message & Estd 2016)" },
@@ -21,7 +21,7 @@ export const PROFILE_PAGES_META = [
   { pageNumber: 9, title: "Back Cover", label: "ব্যাক কভার ও সমাপনী (Excellence Seal)" }
 ];
 
-export const PROFILE_STATS = [
+export let PROFILE_STATS = [
   { value: "10+", label: "Years of Experience", subtext: "অভিজ্ঞতার বছর" },
   { value: "500+", label: "Skilled Workers", subtext: "দক্ষ জনবল" },
   { value: "100+", label: "Projects Completed", subtext: "সফল প্রজেক্ট" },
@@ -29,7 +29,7 @@ export const PROFILE_STATS = [
   { value: "100%", label: "Client Satisfaction", subtext: "গ্রাহক সন্তুষ্টি" }
 ];
 
-export const PROFILE_SERVICES_CONSTRUCTION = [
+export let PROFILE_SERVICES_CONSTRUCTION = [
   { name: "Residential Building", desc: "We build modern, safe and comfortable residential buildings." },
   { name: "Commercial Building", desc: "High-quality commercial spaces designed for business growth." },
   { name: "Industrial Building", desc: "Strong and reliable industrial structures built to last." },
@@ -41,7 +41,7 @@ export const PROFILE_SERVICES_CONSTRUCTION = [
   { name: "Finishing Work", desc: "Complete finishing solutions with attention to every detail." }
 ];
 
-export const PROFILE_SERVICES_MANPOWER = [
+export let PROFILE_SERVICES_MANPOWER = [
   { name: "Civil Engineer", desc: "Qualified civil engineers for planning, designing and supervision." },
   { name: "Site Engineer", desc: "Experienced site engineers to ensure smooth project execution." },
   { name: "Construction Foreman", desc: "Skilled foremen to manage site activities efficiently." },
@@ -53,7 +53,7 @@ export const PROFILE_SERVICES_MANPOWER = [
   { name: "Helper", desc: "Hardworking helpers to support all kinds of construction activities." }
 ];
 
-export const PROFILE_VALUES_8 = [
+export let PROFILE_VALUES_8 = [
   {
     id: "v1",
     title: "INTEGRITY",
@@ -104,7 +104,7 @@ export const PROFILE_VALUES_8 = [
   }
 ];
 
-export const PROFILE_WHY_US_8 = [
+export let PROFILE_WHY_US_8 = [
   {
     title: "EXPERIENCED TEAM",
     desc: "Our team consists of highly skilled professionals with years of hands-on experience in construction and manpower supply."
@@ -139,7 +139,7 @@ export const PROFILE_WHY_US_8 = [
   }
 ];
 
-export const PROFILE_PROJECTS_6 = [
+export let PROFILE_PROJECTS_6 = [
   {
     num: "01",
     name: "RESIDENTIAL BUILDING",
@@ -189,3 +189,22 @@ export const PROFILE_PROJECTS_6 = [
     image: "/images/projects/project-06-narayanganj.jpg"
   }
 ];
+
+
+export function applyRemoteProfileData(data: {
+  pages?: typeof PROFILE_PAGES_META;
+  stats?: typeof PROFILE_STATS;
+  servicesConstruction?: typeof PROFILE_SERVICES_CONSTRUCTION;
+  servicesManpower?: typeof PROFILE_SERVICES_MANPOWER;
+  values?: typeof PROFILE_VALUES_8;
+  whyUs?: typeof PROFILE_WHY_US_8;
+  projects?: typeof PROFILE_PROJECTS_6;
+}) {
+  if (data.pages?.length) PROFILE_PAGES_META = data.pages;
+  if (data.stats?.length) PROFILE_STATS = data.stats;
+  if (data.servicesConstruction?.length) PROFILE_SERVICES_CONSTRUCTION = data.servicesConstruction;
+  if (data.servicesManpower?.length) PROFILE_SERVICES_MANPOWER = data.servicesManpower;
+  if (data.values?.length) PROFILE_VALUES_8 = data.values;
+  if (data.whyUs?.length) PROFILE_WHY_US_8 = data.whyUs;
+  if (data.projects?.length) PROFILE_PROJECTS_6 = data.projects;
+}
