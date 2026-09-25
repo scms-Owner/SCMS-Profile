@@ -15,9 +15,21 @@ import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { MobileQuickBar } from './components/MobileQuickBar';
+import { AdminPanel } from './components/AdminPanel';
+import { loadRemoteSiteData } from './lib/siteData';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState<string>('home');
+  const [isAdminRoute, setIsAdminRoute] = useState(() => window.location.hash === '#/admin');
+
+  useEffect(() => {
+    const onHash = () => setIsAdminRoute(window.location.hash === '#/admin');
+    window.addEventListener('hashchange', onHash);
+    loadRemoteSiteData();
+    return () => window.removeEventListener('hashchange', onHash);
+  }, []);
+
+  if (isAdminRoute) return <AdminPanel />;
 
   // Smooth scroll and active section observer
   useEffect(() => {
