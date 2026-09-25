@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { supabase, ADMIN_EMAIL, SITE_MEDIA_BUCKET } from '../lib/supabase';
 import { loadRemoteSiteData } from '../lib/siteData';
+import { COMPANY_INFO, CORE_SERVICES, WORKER_CATEGORIES, CONTRACTING_SERVICES_LIST, HOW_IT_WORKS_STEPS, WHY_CHOOSE_ITEMS, PORTFOLIO_PROJECTS, GALLERY_ITEMS } from '../data/companyData';
+import { PROFILE_PAGES_META, PROFILE_STATS, PROFILE_SERVICES_CONSTRUCTION, PROFILE_SERVICES_MANPOWER, PROFILE_VALUES_8, PROFILE_WHY_US_8, PROFILE_PROJECTS_6 } from '../data/corporateProfileData';
 
 type Tab = 'overview' | 'company' | 'services' | 'workers' | 'projects' | 'gallery';
 
@@ -65,6 +67,37 @@ export function AdminPanel() {
   const [gallery,setGallery]=useState<any[]>([]);
   const [editing,setEditing]=useState<any>(null);
 
+  const seedDefaults = async () => {
+    const settings = {
+      site_key:'main', company_name:COMPANY_INFO.name, short_name:COMPANY_INFO.shortName, tagline:COMPANY_INFO.tagline,
+      business:COMPANY_INFO.business, proprietor_name:COMPANY_INFO.proprietor, proprietor_title:COMPANY_INFO.proprietorTitle,
+      estd:COMPANY_INFO.estd, website:COMPANY_INFO.website, email:COMPANY_INFO.email, phones:COMPANY_INFO.phones,
+      address:COMPANY_INFO.location, whatsapp_url:COMPANY_INFO.whatsAppUrl, working_hours:COMPANY_INFO.workingHours,
+      default_whatsapp_message:COMPANY_INFO.defaultWhatsAppMessage, proprietor_photo_url:COMPANY_INFO.proprietorPhoto,
+    };
+    const results:any[] = [];
+    results.push(await supabase.from('site_settings').upsert(settings,{onConflict:'site_key'}));
+    results.push(await supabase.from('services').upsert(CORE_SERVICES.map((x:any,i)=>({id:x.id,number:x.number,title:x.title,short_desc:x.shortDesc,full_desc:x.fullDesc,icon_name:x.iconName,image_url:x.image,highlights:x.highlights,category:x.category,sort_order:i,is_visible:true}))));
+    results.push(await supabase.from('worker_categories').upsert(WORKER_CATEGORIES.map((x:any,i)=>({id:x.id,name:x.name,bengali_title:x.bengaliTitle,category:x.category,short_desc:x.shortDesc,skills:x.skills,icon_name:x.iconName,image_url:x.image,sort_order:i,is_visible:true}))));
+    results.push(await supabase.from('projects').upsert(PORTFOLIO_PROJECTS.map((x:any,i)=>({id:x.id,name:x.name,location:x.location,project_type:x.projectType,category:x.category,status:x.status,short_desc:x.shortDesc,full_desc:x.fullDesc,services_provided:x.servicesProvided,image_url:x.image,sort_order:i,is_visible:true}))));
+    results.push(await supabase.from('project_gallery').insert(PORTFOLIO_PROJECTS.flatMap((x:any)=>x.gallery.map((url:string,i:number)=>({project_id:x.id,image_url:url,sort_order:i}))));
+    results.push(await supabase.from('gallery_items').upsert(GALLERY_ITEMS.map((x:any,i)=>({id:x.id,title:x.title,category:x.category,image_url:x.image,location:x.location,sort_order:i,is_visible:true}))));
+    results.push(await supabase.from('how_it_works').upsert(HOW_IT_WORKS_STEPS.map((x:any,i)=>({id:'step-'+(i+1),step_number:i+1,title:x.title,description:x.desc,sort_order:i,is_visible:true}))));
+    results.push(await supabase.from('why_choose_us').upsert(WHY_CHOOSE_ITEMS.map((x:any,i)=>({id:'why-'+(i+1),title:x.title,description:x.desc,sort_order:i,is_visible:true}))));
+    results.push(await supabase.from('contracting_services').upsert(CONTRACTING_SERVICES_LIST.map((x:string,i:number)=>({id:'contract-'+(i+1),title:x,sort_order:i,is_visible:true}))));
+    results.push(await supabase.from('profile_pages').upsert(PROFILE_PAGES_META.map((x:any)=>({page_number:x.pageNumber,title:x.title,label:x.label}))));
+    results.push(await supabase.from('profile_stats').upsert(PROFILE_STATS.map((x:any,i:number)=>({id:'stat-'+(i+1),value:x.value,label:x.label,subtext:x.subtext,sort_order:i,is_visible:true}))));
+    results.push(await supabase.from('profile_services').insert([
+      ...PROFILE_SERVICES_CONSTRUCTION.map((x:any,i:number)=>({service_group:'construction',name:x.name,description:x.desc,sort_order:i,is_visible:true})),
+      ...PROFILE_SERVICES_MANPOWER.map((x:any,i:number)=>({service_group:'manpower',name:x.name,description:x.desc,sort_order:i,is_visible:true}))
+    ]));
+    results.push(await supabase.from('profile_values').upsert(PROFILE_VALUES_8.map((x:any,i:number)=>({id:x.id,title:x.title,description:x.desc,icon_name:x.icon,sort_order:i,is_visible:true}))));
+    results.push(await supabase.from('profile_why_us').upsert(PROFILE_WHY_US_8.map((x:any,i:number)=>({id:'pwhy-'+(i+1),title:x.title,description:x.desc,sort_order:i,is_visible:true}))));
+    results.push(await supabase.from('profile_projects').upsert(PROFILE_PROJECTS_6.map((x:any,i:number)=>({id:'profile-project-'+(i+1),project_number:x.num,name:x.name,location:x.location,year:x.year,description:x.desc,image_url:x.image,sort_order:i,is_visible:true}))));
+    const bad=results.find(x=>x.error); if(bad?.error) throw bad.error;
+    setNotice('Initial website content imported into Supabase.');
+  };
+
   const refresh = async () => {
     setError('');
     const { data: { user } } = await supabase.auth.getUser();
@@ -82,6 +115,8 @@ export function AdminPanel() {
       supabase.from('gallery_items').select('*').order('sort_order'),
     ]);
     if (s.error) throw s.error; if (sv.error) throw sv.error; if (w.error) throw w.error; if (p.error) throw p.error; if (g.error) throw g.error;
+    const emptyDb = !s.data && !(sv.data?.length) && !(w.data?.length) && !(p.data?.length) && !(g.data?.length);
+    if (emptyDb) { await seedDefaults(); return refresh(); }
     setSettings(s.data || { site_key:'main', company_name:'', short_name:'', tagline:'', business:'', proprietor_name:'', proprietor_title:'', proprietor_bio:'', estd:'2016', website:'', email:ADMIN_EMAIL, phones:[], address:'', whatsapp_url:'', working_hours:'', default_whatsapp_message:'', logo_url:'', hero_image_url:'', proprietor_photo_url:'', mission:'', vision:'', about_description:'' });
     setServices(sv.data || []); setWorkers(w.data || []); setProjects(p.data || []); setGallery(g.data || []);
     setLoading(false);
