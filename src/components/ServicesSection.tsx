@@ -96,6 +96,9 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onRequestServi
                   </div>
 
                   {/* Central 3D Vector Icon */}
+                  {service.image ? <img src={service.image} alt={service.title} className="absolute inset-0 h-full w-full object-cover object-center opacity-80 group-hover:opacity-100 transition-opacity" /> : null}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a0b10]/90 via-[#11131a]/30 to-transparent pointer-events-none"></div>
+
                   <div className="relative z-10 flex items-center justify-center my-auto">
                     <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#d4af37]/25 to-black/70 border-2 border-[#d4af37]/60 flex items-center justify-center shadow-[0_8px_20px_rgba(0,0,0,0.7)] group-hover:scale-110 group-hover:border-[#fce089] transition-all duration-300">
                       {getServiceIcon(service.iconName)}
