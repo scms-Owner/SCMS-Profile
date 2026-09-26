@@ -124,6 +124,9 @@ export const ProjectPortfolio: React.FC<ProjectPortfolioProps> = ({ onEnquirePro
                     </span>
                   </div>
 
+                  {project.image ? <img src={project.image} alt={project.name} className="absolute inset-0 h-full w-full object-cover object-center opacity-80 group-hover:opacity-100 transition-opacity" /> : null}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a0c12]/90 via-[#11141d]/35 to-transparent pointer-events-none"></div>
+
                   {/* Central 3D Vector Building Icon */}
                   <div className="relative z-10 flex items-center justify-center my-auto">
                     <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#d4af37]/20 to-black/70 border-2 border-[#d4af37]/50 flex items-center justify-center shadow-[0_8px_20px_rgba(0,0,0,0.7)] group-hover:scale-110 group-hover:border-[#fce089] transition-all duration-300">
