@@ -1,7 +1,7 @@
 import React from 'react';
 import { Logo } from './Logo';
 import { COMPANY_INFO } from '../data/companyData';
-import { Phone, Mail, MapPin, MessageSquare, ArrowUp } from 'lucide-react';
+import { Phone, Mail, MapPin, MessageSquare, ArrowUp, Facebook, MapPinned } from 'lucide-react';
 
 interface FooterProps {
   onNavigateSection: (sectionId: string) => void;
@@ -135,16 +135,16 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateSection }) => {
                 <span>{COMPANY_INFO.location}</span>
               </div>
 
-              <div className="pt-2">
-                <a
-                  href={COMPANY_INFO.whatsAppUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#14301d] text-[#4ade80] border border-[#22c55e]/40 font-bold text-xs tracking-wider uppercase hover:bg-[#1a4427] transition-colors shadow-sm"
-                >
-                  <MessageSquare className="w-3.5 h-3.5" />
-                  <span>WHATSAPP DIRECT</span>
+              <div className="pt-2 flex flex-wrap gap-2">
+                <a href={COMPANY_INFO.whatsAppUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#14301d] text-[#4ade80] border border-[#22c55e]/40 font-bold text-xs tracking-wider uppercase hover:bg-[#1a4427] transition-colors shadow-sm">
+                  <MessageSquare className="w-3.5 h-3.5" /><span>WHATSAPP</span>
                 </a>
+                {COMPANY_INFO.facebookPageUrl && <a href={COMPANY_INFO.facebookPageUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#111827] text-blue-300 border border-blue-400/30 font-bold text-xs tracking-wider uppercase hover:bg-white/10 transition-colors">
+                  <Facebook className="w-3.5 h-3.5" /><span>FACEBOOK</span>
+                </a>}
+                {COMPANY_INFO.googleBusinessUrl && <a href={COMPANY_INFO.googleBusinessUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#111827] text-gray-200 border border-white/10 font-bold text-xs tracking-wider uppercase hover:bg-white/10 transition-colors">
+                  <MapPinned className="w-3.5 h-3.5" /><span>GOOGLE MAPS</span>
+                </a>}
               </div>
             </div>
           </div>
