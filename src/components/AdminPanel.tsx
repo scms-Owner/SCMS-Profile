@@ -79,7 +79,7 @@ export function AdminPanel() {
       business:COMPANY_INFO.business, proprietor_name:COMPANY_INFO.proprietor, proprietor_title:COMPANY_INFO.proprietorTitle,
       estd:COMPANY_INFO.estd, website:COMPANY_INFO.website, email:COMPANY_INFO.email, phones:COMPANY_INFO.phones,
       address:COMPANY_INFO.location, whatsapp_url:COMPANY_INFO.whatsAppUrl, working_hours:COMPANY_INFO.workingHours,
-      default_whatsapp_message:COMPANY_INFO.defaultWhatsAppMessage, proprietor_photo_url:COMPANY_INFO.proprietorPhoto,
+      default_whatsapp_message:COMPANY_INFO.defaultWhatsAppMessage, facebook_page_url:COMPANY_INFO.facebookPageUrl, google_business_url:COMPANY_INFO.googleBusinessUrl, proprietor_photo_url:COMPANY_INFO.proprietorPhoto,
     };
     const results:any[] = [];
     results.push(await supabase.from('site_settings').upsert(settings,{onConflict:'site_key'}));
@@ -123,7 +123,7 @@ export function AdminPanel() {
     if (s.error) throw s.error; if (sv.error) throw sv.error; if (w.error) throw w.error; if (p.error) throw p.error; if (g.error) throw g.error;
     const emptyDb = !s.data && !(sv.data?.length) && !(w.data?.length) && !(p.data?.length) && !(g.data?.length);
     if (emptyDb) { await seedDefaults(); return refresh(); }
-    setSettings(s.data || { site_key:'main', company_name:'', short_name:'', tagline:'', business:'', proprietor_name:'', proprietor_title:'', proprietor_bio:'', estd:'2016', website:'', email:ADMIN_EMAIL, phones:[], address:'', whatsapp_url:'', working_hours:'', default_whatsapp_message:'', logo_url:'', hero_image_url:'', proprietor_photo_url:'', mission:'', vision:'', about_description:'' });
+    setSettings(s.data || { site_key:'main', company_name:'', short_name:'', tagline:'', business:'', proprietor_name:'', proprietor_title:'', proprietor_bio:'', estd:'2016', website:'', email:ADMIN_EMAIL, phones:[], address:'', whatsapp_url:'', facebook_page_url:'', google_business_url:'', working_hours:'', default_whatsapp_message:'', logo_url:'', hero_image_url:'', proprietor_photo_url:'', mission:'', vision:'', about_description:'' });
     setServices(sv.data || []); setWorkers(w.data || []); setProjects(p.data || []); setGallery(g.data || []);
     setLoading(false);
   };
@@ -269,7 +269,7 @@ export function AdminPanel() {
           {[
             ['company_name','Company name'],['short_name','Short name'],['tagline','Tagline'],['business','Business'],
             ['proprietor_name','Proprietor name'],['proprietor_title','Proprietor title'],['estd','Established'],['website','Website'],
-            ['email','Email'],['address','Address'],['whatsapp_url','WhatsApp URL'],['working_hours','Working hours'],
+            ['email','Email'],['address','Address'],['whatsapp_url','WhatsApp URL'],['facebook_page_url','Facebook Page URL'],['google_business_url','Google Business / Maps URL'],['working_hours','Working hours'],
           ].map(([k,l])=><Field key={k} label={l} value={settings[k]} onChange={(v:string)=>setSettings({...settings,[k]:v})}/>)}
         </div>
         <Field label="Proprietor bio" textarea value={settings.proprietor_bio} onChange={(v:string)=>setSettings({...settings,proprietor_bio:v})}/>
