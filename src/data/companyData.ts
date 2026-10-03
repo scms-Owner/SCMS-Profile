@@ -18,6 +18,8 @@ export let COMPANY_INFO = {
   location: "Naogaon Sadar, Naogaon, Bangladesh",
   whatsAppUrl: "https://wa.me/message/Y2CJQ7HLS7STE1",
   workingHours: "Saturday - Thursday: 8:00 AM - 8:00 PM (24/7 Emergency site support)",
+  facebookPageUrl: "",
+  googleBusinessUrl: "",
   defaultWhatsAppMessage: `Hello SOHANUR CONSTRUCTION & MANPOWER SOLUTION,\n\nI am interested in your services.\n\nMy requirement:\nProject Location:\nService Required:\nAdditional Details:\n\nPlease contact me.`
 };
 
