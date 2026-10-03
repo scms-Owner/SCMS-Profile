@@ -93,6 +93,8 @@ export async function loadRemoteSiteData() {
         email: settings.email || undefined,
         location: settings.address || undefined,
         whatsAppUrl: settings.whatsapp_url || undefined,
+        facebookPageUrl: settings.facebook_page_url || undefined,
+        googleBusinessUrl: settings.google_business_url || undefined,
         workingHours: settings.working_hours || undefined,
         defaultWhatsAppMessage: settings.default_whatsapp_message || undefined,
       } : undefined,
