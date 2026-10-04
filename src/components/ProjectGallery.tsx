@@ -202,9 +202,22 @@ export const ProjectGallery: React.FC = () => {
             <ChevronRight className="w-6 h-6" />
           </button>
 
+          {/* Full-screen image viewer */}
+          <div className="absolute inset-0 flex items-center justify-center p-8 sm:p-12">
+            {filteredItems[lightboxIndex].image ? (
+              <img
+                src={filteredItems[lightboxIndex].image}
+                alt={filteredItems[lightboxIndex].title}
+                className="max-h-[78vh] max-w-[92vw] object-contain rounded-xl shadow-[0_25px_80px_rgba(0,0,0,0.8)] animate-lightboxZoom"
+              />
+            ) : (
+              <div className="text-gray-400">No image available</div>
+            )}
+          </div>
+
           {/* Detail Card Container */}
-          <div className="max-w-lg w-full bg-gradient-to-b from-[#181b24] to-[#0c0d12] border-2 border-[#d4af37]/50 rounded-2xl p-6 sm:p-8 text-center shadow-2xl relative">
-            <div className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-[#d4af37]/20 border-2 border-[#d4af37]/60 flex items-center justify-center shadow-lg">
+          <div className="absolute bottom-5 left-1/2 -translate-x-1/2 max-w-2xl w-[calc(100%-2rem)] bg-black/75 backdrop-blur-xl border border-[#d4af37]/40 rounded-2xl px-4 py-3 text-center shadow-2xl relative">
+            <div className="hidden sm:flex w-10 h-10 mx-auto mb-2 rounded-xl bg-[#d4af37]/20 border border-[#d4af37]/60 items-center justify-center shadow-lg">
               {getCategoryIcon(filteredItems[lightboxIndex].category)}
             </div>
 
@@ -212,7 +225,7 @@ export const ProjectGallery: React.FC = () => {
               {filteredItems[lightboxIndex].category}
             </span>
 
-            <h3 className="text-xl sm:text-2xl font-bold text-white font-['Montserrat'] mt-3">
+            <h3 className="text-lg sm:text-xl font-bold text-white font-['Montserrat'] mt-1">
               {filteredItems[lightboxIndex].title}
             </h3>
 
@@ -223,7 +236,7 @@ export const ProjectGallery: React.FC = () => {
               </p>
             )}
 
-            <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-gray-400 font-mono">
+            <div className="mt-3 pt-2 border-t border-white/10 flex items-center justify-between text-[10px] text-gray-400 font-mono">
               <span>ESTD 2016</span>
               <span className="text-[#fce089] font-bold">
                 SPEC RECORD {lightboxIndex + 1} OF {filteredItems.length}
