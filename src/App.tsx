@@ -1,152 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import { Header } from './components/Header';
-import { Hero } from './components/Hero';
-import { CompanyIntro } from './components/CompanyIntro';
-import { ServicesSection } from './components/ServicesSection';
-import { ContractingSection } from './components/ContractingSection';
-import { ManpowerSection } from './components/ManpowerSection';
-import { HowItWorks } from './components/HowItWorks';
-import { WhyChooseUs } from './components/WhyChooseUs';
-import { ProjectPortfolio } from './components/ProjectPortfolio';
-import { ProjectGallery } from './components/ProjectGallery';
-import { AboutSection } from './components/AboutSection';
-import { CallToAction } from './components/CallToAction';
-import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { MobileQuickBar } from './components/MobileQuickBar';
 import { AdminPanel } from './components/AdminPanel';
+import { PublicPages } from './components/PublicPages';
 import { loadRemoteSiteData } from './lib/siteData';
 
+const routeFromHash = () => {
+  const hash = window.location.hash.replace(/^#\/?/, '').split('?')[0];
+  if (hash.startsWith('admin')) return 'admin';
+  return hash || 'home';
+};
+
 export default function App() {
-  const [activeSection, setActiveSection] = useState<string>('home');
-  const [isAdminRoute, setIsAdminRoute] = useState(() => window.location.hash.startsWith('#/admin') || new URLSearchParams(window.location.search).get('admin') === '1');
-  const [, setSiteDataVersion] = useState(0);
-
+  const [route,setRoute] = useState(routeFromHash);
+  const [,setSiteDataVersion] = useState(0);
   useEffect(() => {
-    const onHash = () => setIsAdminRoute(window.location.hash.startsWith('#/admin') || new URLSearchParams(window.location.search).get('admin') === '1');
-    window.addEventListener('hashchange', onHash);
-    loadRemoteSiteData().then(() => setSiteDataVersion(v => v + 1));
-    return () => window.removeEventListener('hashchange', onHash);
-  }, []);
-
-  // Smooth scroll and active section observer
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = [
-        'home',
-        'about',
-        'services',
-        'contracting',
-        'manpower',
-        'projects',
-        'gallery',
-        'why-us',
-        'contact'
-      ];
-      const scrollPos = window.scrollY + 200;
-
-      for (const section of sections) {
-        const el = document.getElementById(section);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPos >= top && scrollPos < top + height) {
-            setActiveSection(section);
-            break;
-          }
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const handleNavigateSection = (sectionId: string) => {
-    const el = document.getElementById(sectionId);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
+    const onHash = () => { setRoute(routeFromHash()); window.scrollTo({top:0,behavior:'smooth'}); };
+    window.addEventListener('hashchange',onHash);
+    loadRemoteSiteData().then(() => setSiteDataVersion(v=>v+1));
+    return () => window.removeEventListener('hashchange',onHash);
+  },[]);
+  const navigate = (id:string) => {
+    const map:Record<string,string> = {home:'home',about:'about','about-intro':'about',services:'services',contracting:'services',manpower:'services','why-us':'services',projects:'projects',gallery:'projects',contact:'contact'};
+    const target=map[id] || id;
+    window.location.hash = target === 'home' ? '/' : `/${target}`;
   };
-
-  if (isAdminRoute) return <AdminPanel />;
-
+  if (route === 'admin') return <AdminPanel />;
+  const active = route === 'home' ? 'home' : route === 'about' ? 'about-intro' : route === 'services' ? 'services' : route === 'projects' ? 'projects' : 'contact';
   return (
     <div className="min-h-screen bg-[#0b0c10] text-[#e5e7eb] flex flex-col font-['Plus_Jakarta_Sans']">
-      {/* Sticky Header with Direct Contact Button */}
-      <Header
-        activeSection={activeSection}
-        onNavigateSection={handleNavigateSection}
-      />
-
-      {/* Main Content Sections */}
-      <main className="flex-1">
-        {/* 1. Hero Section */}
-        <Hero
-          onHireConstructionClick={() => handleNavigateSection('contact')}
-          onRequestManpowerClick={() => handleNavigateSection('contact')}
-        />
-
-        {/* 2. Company Introduction */}
-        <CompanyIntro
-          onViewConstructionServices={() => handleNavigateSection('contracting')}
-          onViewManpowerServices={() => handleNavigateSection('manpower')}
-        />
-
-        {/* 3. Core Services (8 Cards with Learn More & Direct Contact) */}
-        <ServicesSection
-          onRequestService={() => handleNavigateSection('contact')}
-        />
-
-        {/* 4. Construction Contracting (Dedicated Civil Section) */}
-        <ContractingSection
-          onDiscussProjectClick={() => handleNavigateSection('contact')}
-        />
-
-        {/* 5. Manpower Supply (10 Worker Categories) */}
-        <ManpowerSection
-          onRequestWorkforce={() => handleNavigateSection('contact')}
-        />
-
-        {/* 6. How It Works (4 Steps) */}
-        <HowItWorks />
-
-        {/* 7. Why Choose Us (9 Pillars) */}
-        <WhyChooseUs />
-
-        {/* 8. Project Portfolio (Filters & Details Modal) */}
-        <ProjectPortfolio
-          onEnquireProject={() => handleNavigateSection('contact')}
-        />
-
-        {/* 9. Project Gallery (Real Photography Showcase) */}
-        <ProjectGallery />
-
-        {/* 10. About Us (Mission, Vision, Proprietor) */}
-        <AboutSection />
-
-        {/* 11. Large Direct Action Banner */}
-        <CallToAction
-          onContactClick={() => handleNavigateSection('contact')}
-        />
-
-        {/* 12. Direct Contact Section: Phone, Email, WhatsApp - No Forms */}
-        <ContactSection />
-      </main>
-
-      {/* Footer */}
-      <Footer
-        onNavigateSection={handleNavigateSection}
-      />
-
-      {/* Floating WhatsApp Quick Button */}
+      <Header activeSection={active} onNavigateSection={navigate} />
+      <PublicPages page={route} navigate={navigate} />
+      <Footer onNavigateSection={navigate} />
       <FloatingWhatsApp />
-
-      {/* Mobile Ergonomic Bottom Quick Bar (Call, WhatsApp, Email) */}
-      <MobileQuickBar
-        onContactClick={() => handleNavigateSection('contact')}
-      />
+      <MobileQuickBar onContactClick={()=>navigate('contact')} />
     </div>
   );
 }
