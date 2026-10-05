@@ -7,28 +7,62 @@ import { AdminPanel } from './components/AdminPanel';
 import { PublicPages } from './components/PublicPages';
 import { loadRemoteSiteData } from './lib/siteData';
 
-const routeFromHash = () => {
+const routeFromLocation = () => {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('admin') === '1' || params.get('admin') === 'true') return 'admin';
+
   const hash = window.location.hash.replace(/^#\/?/, '').split('?')[0];
   if (hash.startsWith('admin')) return 'admin';
   return hash || 'home';
 };
 
 export default function App() {
-  const [route,setRoute] = useState(routeFromHash);
+  const [route,setRoute] = useState(routeFromLocation);
   const [,setSiteDataVersion] = useState(0);
+
   useEffect(() => {
-    const onHash = () => { setRoute(routeFromHash()); window.scrollTo({top:0,behavior:'smooth'}); };
-    window.addEventListener('hashchange',onHash);
+    const onLocationChange = () => {
+      setRoute(routeFromLocation());
+      window.scrollTo({top:0,behavior:'smooth'});
+    };
+    window.addEventListener('hashchange',onLocationChange);
+    window.addEventListener('popstate',onLocationChange);
     loadRemoteSiteData().then(() => setSiteDataVersion(v=>v+1));
-    return () => window.removeEventListener('hashchange',onHash);
+    return () => {
+      window.removeEventListener('hashchange',onLocationChange);
+      window.removeEventListener('popstate',onLocationChange);
+    };
   },[]);
+
   const navigate = (id:string) => {
-    const map:Record<string,string> = {home:'home',about:'about','about-intro':'about',services:'services',contracting:'services',manpower:'services','why-us':'services',projects:'projects',gallery:'projects',contact:'contact'};
+    const map:Record<string,string> = {
+      home:'home',
+      about:'about',
+      'about-intro':'about',
+      services:'services',
+      contracting:'services',
+      manpower:'services',
+      'why-us':'services',
+      projects:'projects',
+      gallery:'projects',
+      contact:'contact'
+    };
     const target=map[id] || id;
     window.location.hash = target === 'home' ? '/' : `/${target}`;
   };
+
   if (route === 'admin') return <AdminPanel />;
-  const active = route === 'home' ? 'home' : route === 'about' ? 'about-intro' : route === 'services' ? 'services' : route === 'projects' ? 'projects' : 'contact';
+
+  const active = route === 'home'
+    ? 'home'
+    : route === 'about'
+      ? 'about-intro'
+      : route === 'services'
+        ? 'services'
+        : route === 'projects'
+          ? 'projects'
+          : 'contact';
+
   return (
     <div className="min-h-screen bg-[#0b0c10] text-[#e5e7eb] flex flex-col font-['Plus_Jakarta_Sans']">
       <Header activeSection={active} onNavigateSection={navigate} />
